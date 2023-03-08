@@ -2,5 +2,5 @@
 .vs/
 .vscode/
 **/.DS_Store
-!build/GFX.sln
-build/
+build/windows/*
+!build/windows/GFX.sln
