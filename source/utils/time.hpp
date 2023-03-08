@@ -14,6 +14,9 @@ struct TimeMetrics {
 	TimeMetric frame;
 	TimeMetric update;
 	TimeMetric render;
+
+	float32 target_fps;
+	float32 dt;
 };
 TimeMetrics time_metrics;
 

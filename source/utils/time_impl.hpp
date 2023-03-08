@@ -8,7 +8,7 @@ void init_time() {
 
 void update_time() {
 	time_metrics.frame.end();
-	time_metrics.frame.busy_wait(engine.dt);
+	time_metrics.frame.busy_wait(time_metrics.dt);
 }
 
 void TimeMetric::init() {
@@ -49,6 +49,6 @@ void TimeMetric::busy_wait(float64 target) {
 }
 
 void set_target_fps(float32 fps) {
-	engine.target_fps = fps;
-	engine.dt = 1.f / fps;
+	time_metrics.target_fps = fps;
+	time_metrics.dt = 1.f / fps;
 }
