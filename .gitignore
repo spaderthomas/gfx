@@ -5,3 +5,4 @@
 build/windows/*
 !build/windows/GFX.sln
 !build/windows/GFX.vcxproj
+!build/windows/GFX.vcxproj.filters
