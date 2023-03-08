@@ -12,7 +12,7 @@ struct FileChange {
 	char* file_path;
 	char* file_name;
 	FileChangeEvent events;
-	float32 time;
+	float64 time;
 };
 
 struct FileMonitor;

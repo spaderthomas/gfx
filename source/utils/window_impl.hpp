@@ -64,8 +64,8 @@ void init_glfw() {
 }
 
 void set_native_resolution(float32 width, float32 height) {
-	window.native_resolution.x = width;
-	window.native_resolution.y = height;
+	window.native_resolution.x = (int32)width;
+	window.native_resolution.y = (int32)height;
 }
 
 void set_display_mode(DisplayMode mode) {
@@ -89,63 +89,5 @@ void set_window_flags(WindowFlags flags) {
 }
 
 float32 get_display_scale() {
-	return window.output_resolution.x / window.native_resolution.x;
+	return (float32)window.output_resolution.x / (float32)window.native_resolution.x;
 }
-
-////////////////////
-// GLFW Callbacks //
-////////////////////
-static void GLFW_Cursor_Pos_Callback(GLFWwindow* glfw, double x, double y) {
-	auto& input_manager = get_input_manager();
-	if (x < 0) x = 0;
-	if (y < 0) y = 0;
-
-	input_manager.mouse.x = x / window.output_resolution.x;
-	input_manager.mouse.y = 1 - (y / window.output_resolution.y);
-}
-
-void GLFW_Mouse_Button_Callback(GLFWwindow* window, int button, int action, int mods) {
-	auto& input_manager = get_input_manager();
-	if (button == GLFW_MOUSE_BUTTON_LEFT) {
-		if (action == GLFW_PRESS) {
-			input_manager.is_down[GLFW_MOUSE_BUTTON_LEFT] = true;
-		}
-		if (action == GLFW_RELEASE) {
-			input_manager.is_down[GLFW_MOUSE_BUTTON_LEFT] = false;
-		}
-	}
-	if (button == GLFW_MOUSE_BUTTON_RIGHT) {
-		if (action == GLFW_PRESS) {
-			input_manager.is_down[GLFW_MOUSE_BUTTON_RIGHT] = true;
-		}
-		if (action == GLFW_RELEASE) {
-			input_manager.is_down[GLFW_MOUSE_BUTTON_RIGHT] = false;
-		}
-	}
-}
-
-void GLFW_Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	auto& manager = get_input_manager();
-	
-	if (action == GLFW_PRESS) {
-		manager.is_down[key] = true;
-	}
-    if (action == GLFW_RELEASE) {
-		manager.is_down[key] = false;
-	}
-}
-
-void GLFW_Scroll_Callback(GLFWwindow* window, double dx, double dy) {
-	auto& input_manager = get_input_manager();
-
-	input_manager.scroll.x = dx;
-	input_manager.scroll.y = dy;
-}
-
-void GLFW_Error_Callback(int err, const char* msg) {
-}
-
-void GLFW_Window_Size_Callback(GLFWwindow* window, int width, int height) {
-	glViewport(0, 0, width, height);	
-}
-

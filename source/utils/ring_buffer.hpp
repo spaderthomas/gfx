@@ -1,8 +1,8 @@
 template<typename T>
 struct RingBuffer {
-	int32 head      = 0;
-	int32 size      = 0;
-	int32 capacity  = 0;
+	uint32 head      = 0;
+	uint32 size      = 0;
+	uint32 capacity  = 0;
 	T* data         = nullptr;
 
 	T* operator[](uint32 index) {

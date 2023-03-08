@@ -48,7 +48,7 @@ void TimeMetric::busy_wait(float64 target) {
 	}
 }
 
-void set_target_fps(float64 fps) {
+void set_target_fps(float32 fps) {
 	engine.target_fps = fps;
 	engine.dt = 1.f / fps;
 }

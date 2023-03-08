@@ -138,3 +138,65 @@ void update_input() {
 		input.enable_channel(INPUT_MASK_GAME);
 	}
 }
+
+////////////////////
+// GLFW Callbacks //
+////////////////////
+static void GLFW_Cursor_Pos_Callback(GLFWwindow* glfw, double x, double y) {
+	auto& input_manager = get_input_manager();
+	
+	auto fx = (float32)x;
+	if (fx < 0) fx = 0;
+	
+	auto fy = (float32)y;
+	if (fy < 0) fy = 0;
+
+	input_manager.mouse.x = fx;
+	input_manager.mouse.y = fy;
+}
+
+void GLFW_Mouse_Button_Callback(GLFWwindow* window, int button, int action, int mods) {
+	auto& input_manager = get_input_manager();
+	if (button == GLFW_MOUSE_BUTTON_LEFT) {
+		if (action == GLFW_PRESS) {
+			input_manager.is_down[GLFW_MOUSE_BUTTON_LEFT] = true;
+		}
+		if (action == GLFW_RELEASE) {
+			input_manager.is_down[GLFW_MOUSE_BUTTON_LEFT] = false;
+		}
+	}
+	if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+		if (action == GLFW_PRESS) {
+			input_manager.is_down[GLFW_MOUSE_BUTTON_RIGHT] = true;
+		}
+		if (action == GLFW_RELEASE) {
+			input_manager.is_down[GLFW_MOUSE_BUTTON_RIGHT] = false;
+		}
+	}
+}
+
+void GLFW_Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	auto& manager = get_input_manager();
+	
+	if (action == GLFW_PRESS) {
+		manager.is_down[key] = true;
+	}
+    if (action == GLFW_RELEASE) {
+		manager.is_down[key] = false;
+	}
+}
+
+void GLFW_Scroll_Callback(GLFWwindow* window, double dx, double dy) {
+	auto& input_manager = get_input_manager();
+
+	input_manager.scroll.x = (float32)dx;
+	input_manager.scroll.y = (float32)dy;
+}
+
+void GLFW_Error_Callback(int err, const char* msg) {
+}
+
+void GLFW_Window_Size_Callback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);	
+}
+

@@ -64,8 +64,8 @@ float32 vec_dot(Vector2* a, Vector2* b) {
 }
 
 Vector2& Vector2::operator=(const Vector2I& other) {
-	x = other.x;
-	y = other.y;
+	x = (float32)other.x;
+	y = (float32)other.y;
 	return *this;
 }
 

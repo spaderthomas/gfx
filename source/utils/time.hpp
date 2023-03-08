@@ -19,4 +19,4 @@ TimeMetrics time_metrics;
 
 void init_time();
 void update_time();
-void set_target_fps(float64 fps);
+void set_target_fps(float32 fps);

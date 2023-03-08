@@ -11,11 +11,13 @@
 #include "utils/path.hpp"
 #include "utils/vector.hpp"
 #include "utils/matrix.hpp"
+#include "utils/shader.hpp"
 #include "utils/file_monitor.hpp"
 #include "utils/time.hpp"
 #include "utils/window.hpp"
 #include "utils/input.hpp"
 #include "utils/imgui.hpp"
+#include "utils/defer.hpp"
 #include "render.hpp"
 #include "sandbox.hpp"
 
@@ -23,18 +25,21 @@
 #include "utils/memory_impl.hpp"
 #include "utils/path_impl.hpp"
 #include "utils/window_impl.hpp"
+#include "utils/shader_impl.hpp"
 #include "utils/time_impl.hpp"
 #include "utils/input_impl.hpp"
 
 int main(int arg_count, char** args) {
 	init_temporary_storage();
+	init_paths();
 	init_time();
 	init_file_monitors();
 	init_glfw();
 	init_render();
+	init_shaders();
 	init_imgui();
 
-	while (glfwWindowShouldClose != 0) {
+	while (!glfwWindowShouldClose(window.handle)) {
 		update_temporary_storage();
 		update_file_monitors();
 		update_input();

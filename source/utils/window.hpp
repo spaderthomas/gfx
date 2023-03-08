@@ -19,8 +19,8 @@ enum class DisplayMode {
 };
 
 struct WindowInfo {
-	Vector2 native_resolution;
-	Vector2 output_resolution;
+	Vector2I native_resolution;
+	Vector2I output_resolution;
 	DisplayMode display_mode;
 	WindowFlags flags;
 	GLFWwindow* handle;
