@@ -1,0 +1,6 @@
+.gdb_history
+.vs/
+.vscode/
+**/.DS_Store
+!build/GFX.sln
+build/
