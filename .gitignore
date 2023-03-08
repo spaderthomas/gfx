@@ -4,3 +4,4 @@
 **/.DS_Store
 build/windows/*
 !build/windows/GFX.sln
+!build/windows/GFX.vcxproj
