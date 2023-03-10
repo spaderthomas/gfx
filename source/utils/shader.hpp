@@ -19,6 +19,7 @@ struct Shader {
 	void set_int(const char* name,   int32   data);
 	void set_float(const char* name, float32 data);
 	void set_vec2(const char* name,  Vector2 data);
+	void set_vec3(const char* name,  glm::vec3 data);
 	void set_vec3(const char* name,  Vector3 data);
 	void set_vec4(const char* name,  Vector4 data);
 	void set_mat4(const char* name,  Matrix4 data);

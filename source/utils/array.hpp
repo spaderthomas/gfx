@@ -16,7 +16,7 @@ struct Array {
 	int32 capacity  = 0;
 	T* data         = nullptr;
 
-	T* operator[](uint32 index) { fm_assert(index < size); return data + index; }
+	T* operator[](uint32 index) { fm_assert((int32)index < size); return data + index; }
 };
 
 template<typename T>

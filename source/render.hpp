@@ -1,45 +1,45 @@
 float vertices[] = {
-	-0.5f, -0.5f, -0.5f, 
-	0.5f, -0.5f, -0.5f,  
-	0.5f,  0.5f, -0.5f,  
-	0.5f,  0.5f, -0.5f,  
-	-0.5f,  0.5f, -0.5f, 
-	-0.5f, -0.5f, -0.5f, 
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
 
-	-0.5f, -0.5f,  0.5f, 
-	0.5f, -0.5f,  0.5f,  
-	0.5f,  0.5f,  0.5f,  
-	0.5f,  0.5f,  0.5f,  
-	-0.5f,  0.5f,  0.5f, 
-	-0.5f, -0.5f,  0.5f, 
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
 
-	-0.5f,  0.5f,  0.5f, 
-	-0.5f,  0.5f, -0.5f, 
-	-0.5f, -0.5f, -0.5f, 
-	-0.5f, -0.5f, -0.5f, 
-	-0.5f, -0.5f,  0.5f, 
-	-0.5f,  0.5f,  0.5f, 
+    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
 
-	0.5f,  0.5f,  0.5f,  
-	0.5f,  0.5f, -0.5f,  
-	0.5f, -0.5f, -0.5f,  
-	0.5f, -0.5f, -0.5f,  
-	0.5f, -0.5f,  0.5f,  
-	0.5f,  0.5f,  0.5f,  
+     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
 
-	-0.5f, -0.5f, -0.5f, 
-	0.5f, -0.5f, -0.5f,  
-	0.5f, -0.5f,  0.5f,  
-	0.5f, -0.5f,  0.5f,  
-	-0.5f, -0.5f,  0.5f, 
-	-0.5f, -0.5f, -0.5f, 
+    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
 
-	-0.5f,  0.5f, -0.5f, 
-	0.5f,  0.5f, -0.5f,  
-	0.5f,  0.5f,  0.5f,  
-	0.5f,  0.5f,  0.5f,  
-	-0.5f,  0.5f,  0.5f, 
-	-0.5f,  0.5f, -0.5f, 
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 };
 
 struct GpuBufferDescriptor {
@@ -119,9 +119,11 @@ void init_render() {
 
 	opengl.geometry.init();
 	opengl.geometry.add_attribute(GL_FLOAT, 3);
+	opengl.geometry.add_attribute(GL_FLOAT, 3);
 	opengl.geometry.build();
 
 	opengl.lights.init();
+	opengl.lights.add_attribute(GL_FLOAT, 3);
 	opengl.lights.add_attribute(GL_FLOAT, 3);
 	opengl.lights.build();
 }
@@ -137,6 +139,17 @@ void swap_buffers() {
 
 
 void update_render() {
+	glm::mat4 projection = glm::perspective(math::radians(options::fov), window.get_aspect_ratio(), options::near_plane, options::far_plane);
+	glm::mat4 view = camera.make_view_matrix();
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::vec3 light_position(1.2f, 1.0f, 2.0f);
+	Vector3 light_color = { 1.0f, 1.0f, 1.0f };
+	Vector3 object_color = { 1.0f, 0.5f, 0.31f };
+
+	auto now = glfwGetTime();
+	auto c = cos(now);
+	auto s = sin(now);
+	//light_position = glm::vec3(1.0f * c, 1.0f, 1.0f * s);
 	clear_render_target();
 
 	opengl.geometry.bind();
@@ -145,20 +158,12 @@ void update_render() {
 	auto shader = find_shader("lighting");
 	shader->begin();
 	
-	glm::mat4 projection = glm::perspective(math::radians(options::fov), window.get_aspect_ratio(), options::near_plane, options::far_plane);
 	shader->set_mat4("projection", projection);
-
-	glm::mat4 view = camera.make_view_matrix();
 	shader->set_mat4("view", view);
-
-	glm::mat4 model = glm::mat4(1.0f);
 	shader->set_mat4("model", model);
-
-	Vector3 light_color = { 1.0f, 1.0f, 1.0f };
 	shader->set_vec3("light_color", light_color);
-
-	Vector3 object_color = { 1.0f, 0.5f, 0.31f };
 	shader->set_vec3("object_color", object_color);
+	shader->set_vec3("light_position", light_position);
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	shader->end();
@@ -167,7 +172,6 @@ void update_render() {
 
 	opengl.lights.bind();
 
-	glm::vec3 light_position(1.2f, 1.0f, 2.0f);
 	shader = find_shader("light_source");
 	shader->begin();
 	shader->set_mat4("projection", projection);

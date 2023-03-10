@@ -41,6 +41,7 @@ void Shader::init(const char* vs_path, const char* fs_path, const char* name) {
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 		if (!success) {
 			glGetShaderInfoLog(shader, 512, NULL, compilation_status);
+			printf("failed to compile shader. shader = %s, error = %s", path, compilation_status);
 		}
 		glAttachShader(shader_program, shader);
 	}
@@ -95,6 +96,11 @@ void Shader::set_vec4(const char* name, Vector4 vec) {
 }
 
 void Shader::set_vec3(const char* name, Vector3 vec) {
+	glUniform3f(get_uniform_loc(name), vec.x, vec.y, vec.z);
+	mark_uniform_set(name);
+}
+
+void Shader::set_vec3(const char* name, glm::vec3 vec) {
 	glUniform3f(get_uniform_loc(name), vec.x, vec.y, vec.z);
 	mark_uniform_set(name);
 }

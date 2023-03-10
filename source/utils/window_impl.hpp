@@ -104,6 +104,6 @@ float32 get_display_scale() {
 }
 
 float32 WindowInfo::get_aspect_ratio() {
-	return (float32)window.output_resolution.y / (float32)window.output_resolution.x;
+	return (float32)window.output_resolution.x / (float32)window.output_resolution.y;
 }
 
