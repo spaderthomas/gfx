@@ -154,6 +154,8 @@ void init_shaders() {
 
 	add_shader("solid");
 	add_shader("texture");
+	add_shader("lighting");
+	add_shader("light_source");
 }
 
 Shader* find_shader(const char* name) {

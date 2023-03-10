@@ -46,3 +46,30 @@ Matrix4 Matrix4::transform(float32 x, float32 y, float32 z) {
 	matrix[3][2] = z;
 	return matrix;
 }
+
+Matrix4 make_frustum_matrix(float32 r, float32 l, float32 t, float32 b, float32 n, float32 f) {
+	Matrix4 matrix = {0};
+	matrix[0][0] = 2 * n / (r - l);
+	matrix[0][2] = (r + l) / (r - l);
+	matrix[1][1] = 2 * n / (t - b);
+	matrix[1][2] = (t + b) / (t - b);
+	matrix[2][2] = -1 * (f + n) / (f - n);
+	matrix[2][2] = -2 * f * n / (f - n);
+	matrix[3][2] = -1;
+
+	return matrix;
+}
+
+Matrix4 make_projection_matrix(float32 fov, float32 aspect, float32 n, float32 f) {	
+	float32 t = tanf(fov * 0.5f);
+
+	Matrix4 matrix = {0};
+	matrix.zero();
+	matrix[0][0] = 1 / (t * aspect);
+	matrix[1][1] = 1 / (t);
+	matrix[2][2] = -1 * (f + n) / (f - n);
+	matrix[2][3] = -1;
+	matrix[3][2] = -2 * f * n / (f - n);
+
+	return matrix;
+}

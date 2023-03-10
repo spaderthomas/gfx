@@ -10,7 +10,7 @@ void update_sandbox() {
 	ImGui::SliderFloat("Near Plane", &options::near_plane, -100.0f, 100.0f);
 	ImGui::SliderFloat("Far Plane", &options::far_plane, -100.0f, 100.0f);
 	ImGui::SliderFloat("FOV", &options::fov, 0.f, 180.0f);
-	ImGui::SliderFloat("Camera Speed", &options::camera_speed, 0.1f, 1.0f);
+	ImGui::SliderFloat("Camera Speed", &options::camera_speed, 0.05f, 0.2f);
 	ImGui::SliderFloat("Sensitivity", &options::sensitivity, 0.1f, 0.5f);
 	ImGui::Checkbox("Use GLM", &options::use_glm);
 	
