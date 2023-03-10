@@ -12,6 +12,7 @@
 #include "utils/math.hpp"
 #include "utils/vector.hpp"
 #include "utils/matrix.hpp"
+#include "utils/camera.hpp"
 #include "utils/shader.hpp"
 #include "utils/file_monitor.hpp"
 #include "utils/time.hpp"
@@ -24,6 +25,7 @@
 #include "render.hpp"
 #include "sandbox.hpp"
 
+#include "utils/camera_impl.hpp"
 #include "utils/file_monitor_impl.hpp"
 #include "utils/memory_impl.hpp"
 #include "utils/path_impl.hpp"
@@ -37,7 +39,7 @@ int main(int arg_count, char** args) {
 	init_paths();
 	init_time();
 	init_file_monitors();
-	init_glfw();
+	init_window();
 	init_textures();
 	init_render();
 	init_shaders();
@@ -47,6 +49,7 @@ int main(int arg_count, char** args) {
 		update_temporary_storage();
 		update_file_monitors();
 		update_input();
+		update_camera();
 		update_imgui();
 		update_sandbox();
 		update_render();

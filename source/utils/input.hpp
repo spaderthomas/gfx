@@ -13,6 +13,7 @@ struct InputManager {
 	Vector2 camera;
 	Vector2 mouse;
 	Vector2 scroll;
+	Vector2 mouse_delta;
 
 	uint8 mask;
 	uint8 old_mask;

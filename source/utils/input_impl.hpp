@@ -113,12 +113,21 @@ InputManager& get_input_manager() {
 void update_input() {
 	auto& input = get_input_manager();
 
+	if (input.was_pressed(GLFW_KEY_TAB)) {
+		options::mouse_enabled = !options::mouse_enabled;
+		auto enabled = options::mouse_enabled ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED;
+		glfwSetInputMode(window.handle, GLFW_CURSOR, enabled);
+	}
+
+
 	for (int key = 0; key < GLFW_KEY_LAST; key++) {
 		input.was_down[key] = input.is_down[key];
 	}
 
 	input.scroll.x = 0;
 	input.scroll.y = 0;
+	input.mouse_delta.x = 0;
+	input.mouse_delta.y = 0;
 
 	// Fill the input manager's buffers with what GLFW tells us
 	glfwPollEvents();
@@ -144,13 +153,13 @@ void update_input() {
 ////////////////////
 static void GLFW_Cursor_Pos_Callback(GLFWwindow* glfw, double x, double y) {
 	auto& input_manager = get_input_manager();
-	
-	auto fx = (float32)x;
-	if (fx < 0) fx = 0;
-	
-	auto fy = (float32)y;
-	if (fy < 0) fy = 0;
 
+	auto fx = (float32)x;
+	auto fy = (float32)y;
+
+	input_manager.mouse_delta.x = input_manager.mouse.x - fx;
+	input_manager.mouse_delta.y = input_manager.mouse.y - fy;
+	
 	input_manager.mouse.x = fx;
 	input_manager.mouse.y = fy;
 }
@@ -196,7 +205,8 @@ void GLFW_Scroll_Callback(GLFWwindow* window, double dx, double dy) {
 void GLFW_Error_Callback(int err, const char* msg) {
 }
 
-void GLFW_Window_Size_Callback(GLFWwindow* window, int width, int height) {
-	glViewport(0, 0, width, height);	
+void GLFW_Window_Size_Callback(GLFWwindow* handle, int width, int height) {
+	set_output_resolution(width, height);
+	glViewport(0, 0, width, height);
 }
 

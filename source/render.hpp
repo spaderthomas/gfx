@@ -143,13 +143,6 @@ void update_render() {
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, opengl.elements);
 	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	auto view = glm::mat4(1.0f);
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-	view = glm::rotate(view, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	
-	auto model = glm::mat4(1.0f);
-	model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-
 	opengl.projection = glm::perspective(math::radians(options::fov), window.get_aspect_ratio(), options::near_plane, options::far_plane);
 	opengl.my_projection = make_projection_matrix(math::radians(options::fov), window.get_aspect_ratio(), options::near_plane, options::far_plane);
 
@@ -172,12 +165,18 @@ void update_render() {
 	else {
 		shader->set_mat4("projection", opengl.my_projection);
 	}
-	shader->set_mat4("view", view);
 
+	const float radius = 40.0f;
+	float camX = sin(glfwGetTime()) * radius;
+	float camZ = cos(glfwGetTime()) * radius;
+
+	glm::mat4 view = camera.make_view_matrix();
+	shader->set_mat4("view", view);
+		
 	for (uint32 i = 0; i < 10; i++) {
 		auto model = glm::mat4(1.0f);
 		model = glm::translate(model, cubePositions[i]);
-
+	
 		float32 angle = 20.0f * i;
 		model = glm::rotate(model, glm::radians(angle), glm::vec3(0.5f, 1.0f, 0.0f));
 		shader->set_mat4("model", model);
