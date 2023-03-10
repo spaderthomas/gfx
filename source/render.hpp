@@ -1,15 +1,3 @@
-struct OpenGL {
-	uint32 vao;
-	uint32 elements;
-	uint32 buffer;
-
-	Matrix4 my_projection;
-	glm::mat4 projection;
-	glm::mat4 view;
-	glm::mat4 model;
-};
-OpenGL opengl;
-
 float vertices[] = {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
      0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -67,33 +55,86 @@ glm::vec3 cubePositions[] = {
     glm::vec3(-1.3f,  1.0f, -1.5f)  
 };
 
-unsigned int indices[] = {  // note that we start from 0!
-    0, 1, 3,   // first triangle
-    1, 2, 3    // second triangle
-};  
-void init_render() {
-	glEnable(GL_DEPTH_TEST);
+struct GpuBufferDescriptor {
+	struct Attribute {
+		uint32 offset;
+		uint32 count;
+		uint32 kind;
+		uint32 size;
+	};
+
+	constexpr static uint32 max_attributes = 16;
 	
-	// Generate OpenGL resources
-	glGenVertexArrays(1, &opengl.vao);
-	glGenBuffers(1, &opengl.buffer);
-	glGenBuffers(1, &opengl.elements);
+	uint32 vao;
+	uint32 buffer;
+	uint32 stride;
+	Array<Attribute> attributes;
+	
+	void init();
+	void build();
+	void bind();
+	void unbind();
+	void add_attribute(uint32 kind, uint32 count);
+};
 
-	// Describe the layout of our vertex buffer
-	glBindVertexArray(opengl.vao);
-	glBindBuffer(GL_ARRAY_BUFFER, opengl.buffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, opengl.elements);
+void GpuBufferDescriptor::init() {
+	arr_init(&attributes, max_attributes);
+}
 
-	auto stride = 5 * sizeof(float);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (GLsizei)stride, 0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, (GLsizei)stride, (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+void GpuBufferDescriptor::add_attribute(uint32 kind, uint32 count) {
+	auto attribute = arr_push(&attributes);
+	attribute->offset = stride;
+	attribute->count   = count;
+	attribute->kind   = kind;
 
-	// Clean up
+	if (attribute->kind == GL_FLOAT) attribute->size = sizeof(float) * count;
+
+	stride += attribute->size;
+}
+
+void GpuBufferDescriptor::bind() {
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+}
+
+void GpuBufferDescriptor::unbind() {
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//set_perspective_projection(100, -100, 100, -100, .1, 100);
+}
+
+void GpuBufferDescriptor::build() {
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &buffer);
+	
+	bind();
+
+	for (uint32 i = 0; i < attributes.size; i++) {
+		auto attribute = attributes[i];
+		glVertexAttribPointer(i, attribute->count, attribute->kind, GL_FALSE, (GLsizei)stride, (void*)(attribute->offset));
+		glEnableVertexAttribArray(i);
+	}
+
+	unbind();
+}
+
+struct OpenGL {
+	GpuBufferDescriptor geometry;
+	GpuBufferDescriptor lights;
+
+	Matrix4 my_projection;
+	glm::mat4 projection;
+	glm::mat4 view;
+	glm::mat4 model;
+};
+OpenGL opengl;
+
+void init_render() {
+	glEnable(GL_DEPTH_TEST);
+
+	opengl.geometry.init();
+	opengl.geometry.add_attribute(GL_FLOAT, 3);
+	opengl.geometry.add_attribute(GL_FLOAT, 2);
+	opengl.geometry.build();
 }
 
 void clear_render_target() {
@@ -135,13 +176,9 @@ Matrix4 make_projection_matrix(float32 fov, float32 aspect, float32 n, float32 f
 void update_render() {
 	clear_render_target();
 
-	glBindVertexArray(opengl.vao);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, opengl.buffer);
+	opengl.geometry.bind();
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
 
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, opengl.elements);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	opengl.projection = glm::perspective(math::radians(options::fov), window.get_aspect_ratio(), options::near_plane, options::far_plane);
 	opengl.my_projection = make_projection_matrix(math::radians(options::fov), window.get_aspect_ratio(), options::near_plane, options::far_plane);
@@ -183,6 +220,8 @@ void update_render() {
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
 	shader->end();
+	
+	opengl.geometry.unbind();
 	
 	render_imgui();
 	swap_buffers();
