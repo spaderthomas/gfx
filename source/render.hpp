@@ -54,6 +54,18 @@ float vertices[] = {
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
+glm::vec3 cubePositions[] = {
+    glm::vec3( 0.0f,  0.0f,  0.0f), 
+    glm::vec3( 2.0f,  5.0f, -15.0f), 
+    glm::vec3(-1.5f, -2.2f, -2.5f),  
+    glm::vec3(-3.8f, -2.0f, -12.3f),  
+    glm::vec3( 2.4f, -0.4f, -3.5f),  
+    glm::vec3(-1.7f,  3.0f, -7.5f),  
+    glm::vec3( 1.3f, -2.0f, -2.5f),  
+    glm::vec3( 1.5f,  2.0f, -2.5f), 
+    glm::vec3( 1.5f,  0.2f, -1.5f), 
+    glm::vec3(-1.3f,  1.0f, -1.5f)  
+};
 
 unsigned int indices[] = {  // note that we start from 0!
     0, 1, 3,   // first triangle
@@ -106,7 +118,7 @@ Matrix4 make_frustum_matrix(float32 r, float32 l, float32 t, float32 b, float32 
 	return matrix;
 }
 
-Matrix4 make_projection_matrix(float32 aspect, float32 fov, float32 n, float32 f) {	
+Matrix4 make_projection_matrix(float32 fov, float32 aspect, float32 n, float32 f) {	
 	float32 t = tanf(fov * 0.5f);
 
 	Matrix4 matrix = {0};
@@ -138,7 +150,7 @@ void update_render() {
 	auto model = glm::mat4(1.0f);
 	model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
-	opengl.projection = glm::perspective(glm::radians(options::fov), window.get_aspect_ratio(), 0.1f, 100.0f);
+	opengl.projection = glm::perspective(math::radians(options::fov), window.get_aspect_ratio(), options::near_plane, options::far_plane);
 	opengl.my_projection = make_projection_matrix(math::radians(options::fov), window.get_aspect_ratio(), options::near_plane, options::far_plane);
 
 	auto texture0 = find_texture("wall.png");
@@ -161,8 +173,16 @@ void update_render() {
 		shader->set_mat4("projection", opengl.my_projection);
 	}
 	shader->set_mat4("view", view);
-	shader->set_mat4("model", model);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	for (uint32 i = 0; i < 10; i++) {
+		auto model = glm::mat4(1.0f);
+		model = glm::translate(model, cubePositions[i]);
+
+		float32 angle = 20.0f * i;
+		model = glm::rotate(model, glm::radians(angle), glm::vec3(0.5f, 1.0f, 0.0f));
+		shader->set_mat4("model", model);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
 	shader->end();
 	
 	render_imgui();
