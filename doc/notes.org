@@ -1,0 +1,11 @@
+Building a perspective projection matrix using FOV
+https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/building-basic-perspective-projection-matrix.html
+
+Building the more general perspective projection matrix using the extends of the
+viewing plane. Also shows how to derive the perspective projection, and then
+explains why the homogeneous coordinate ends up being the Z coordinate.
+https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/opengl-perspective-projection-matrix.html
+
+Another derivation of the general perspective projection matrix. Sometimes one
+gets confusing.
+http://www.songho.ca/opengl/gl_projectionmatrix.html

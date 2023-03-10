@@ -109,6 +109,11 @@ void Shader::set_mat4(const char* name, Matrix4 matrix) {
 	mark_uniform_set(name);
 }
 
+void Shader::set_mat4(const char* name, glm::mat4 matrix) {
+	glUniformMatrix4fv(get_uniform_loc(name), 1, GL_FALSE, glm::value_ptr(matrix));
+	mark_uniform_set(name);
+}
+
 void Shader::set_int(const char* name, GLint val) {
 	glUniform1i(get_uniform_loc(name), val);
 	mark_uniform_set(name);
@@ -148,6 +153,7 @@ void init_shaders() {
 	arr_init(&shaders, 32);
 
 	add_shader("solid");
+	add_shader("texture");
 }
 
 Shader* find_shader(const char* name) {

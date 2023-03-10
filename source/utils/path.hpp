@@ -7,8 +7,9 @@ namespace gfx_path {
 	constexpr int max = 256;
 	char install_dir [gfx_path::max];
 	
-	tstring vertex_shader();
-	tstring fragment_shader();
+	tstring vertex_shader(const char* name);
+	tstring fragment_shader(const char* name);
+	tstring texture(const char* name);
 }
 
 void find_install_dir(char* buf, int32 n);

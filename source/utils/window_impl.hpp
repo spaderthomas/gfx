@@ -91,3 +91,7 @@ void set_window_flags(WindowFlags flags) {
 float32 get_display_scale() {
 	return (float32)window.output_resolution.x / (float32)window.native_resolution.x;
 }
+
+float32 WindowInfo::get_aspect_ratio() {
+	return (float32)window.output_resolution.y / (float32)window.output_resolution.x;
+}

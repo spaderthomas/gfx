@@ -24,6 +24,8 @@ struct WindowInfo {
 	DisplayMode display_mode;
 	WindowFlags flags;
 	GLFWwindow* handle;
+
+	float32 get_aspect_ratio();
 };
 WindowInfo window;
 

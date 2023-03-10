@@ -9,6 +9,7 @@
 #include "utils/hash.hpp"
 #include "utils/memory.hpp"
 #include "utils/path.hpp"
+#include "utils/math.hpp"
 #include "utils/vector.hpp"
 #include "utils/matrix.hpp"
 #include "utils/shader.hpp"
@@ -18,6 +19,8 @@
 #include "utils/input.hpp"
 #include "utils/imgui.hpp"
 #include "utils/defer.hpp"
+#include "utils/texture.hpp"
+#include "options.hpp"
 #include "render.hpp"
 #include "sandbox.hpp"
 
@@ -35,6 +38,7 @@ int main(int arg_count, char** args) {
 	init_time();
 	init_file_monitors();
 	init_glfw();
+	init_textures();
 	init_render();
 	init_shaders();
 	init_imgui();

@@ -22,6 +22,7 @@ struct Shader {
 	void set_vec3(const char* name,  Vector3 data);
 	void set_vec4(const char* name,  Vector4 data);
 	void set_mat4(const char* name,  Matrix4 data);
+	void set_mat4(const char* name,  glm::mat4 data);
 
 	void begin();
 	void check();

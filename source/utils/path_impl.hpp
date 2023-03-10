@@ -63,13 +63,19 @@ void init_paths() {
 namespace gfx_path {
 	tstring vertex_shader(const char* name) {
 		auto path = temporary_storage.alloc_path();
-		snprintf(path, gfx_path::max, "%s/asset/%s.vs", install_dir, name);
+		snprintf(path, gfx_path::max, "%s/asset/shader/%s.vs", install_dir, name);
 		return path;
 	}
 
 	tstring fragment_shader(const char* name) {
 		auto path = temporary_storage.alloc_path();
-		snprintf(path, gfx_path::max, "%s/asset/%s.fs", install_dir, name);
+		snprintf(path, gfx_path::max, "%s/asset/shader/%s.fs", install_dir, name);
+		return path;
+	}
+
+	tstring texture(const char* name) {
+		auto path = temporary_storage.alloc_path();
+		snprintf(path, gfx_path::max, "%s/asset/image/%s", install_dir, name);
 		return path;
 	}
 }

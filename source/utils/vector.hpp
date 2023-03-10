@@ -27,24 +27,8 @@ struct Vector3 {
 
 struct Vector4 {
 	union {
-		float32 x = 0;
-		float32 r;
-		float32 bottom;
-	};
-	union {
-		float32 y = 0;
-		float32 g;
-		float32 top;
-	};
-	union {
-		float32 z = 0;
-		float32 b;
-		float32 left;
-	};
-	union {
-		float32 w = 0;
-		float32 a;
-		float32 right;
+		struct { float32 x, y, z, w; };
+		struct { float32 r, g, b, a; };
 	};
 
 	float32& operator[](int32 index) {
