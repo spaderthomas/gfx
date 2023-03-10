@@ -130,6 +130,11 @@ void Shader::set_float(const char* name, GLfloat val) {
 	mark_uniform_set(name);
 }
 
+void Shader::set_bool(const char* name, bool val) {
+	glUniform1i(get_uniform_loc(name), val ? 1 : 0);
+	mark_uniform_set(name);
+}
+
 void Shader::begin() {
 	if (Shader::active != -1) {
 		return;

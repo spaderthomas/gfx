@@ -164,6 +164,7 @@ void update_render() {
 	shader->set_vec3("light_color", light_color);
 	shader->set_vec3("object_color", object_color);
 	shader->set_vec3("light_position", light_position);
+	shader->set_vec3("camera", camera.position);
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	shader->end();

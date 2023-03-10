@@ -16,6 +16,7 @@ struct Shader {
 	bool was_uniform_set(const char* name);
 	void mark_uniform_set(const char* name);
 
+	void set_bool(const char* name,  bool    data);
 	void set_int(const char* name,   int32   data);
 	void set_float(const char* name, float32 data);
 	void set_vec2(const char* name,  Vector2 data);
