@@ -44,4 +44,5 @@ void init_textures() {
 
 	add_texture("wall.png");
 	add_texture("face.png");
+	add_texture("crate-diffuse.png");
 }

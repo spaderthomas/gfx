@@ -1,46 +1,3 @@
-float vertices[] = {
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-
-    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-
-     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-};
 
 struct Material {
 	glm::vec3 ambient;
@@ -139,11 +96,13 @@ void init_render() {
 	opengl.geometry.init();
 	opengl.geometry.add_attribute(GL_FLOAT, 3);
 	opengl.geometry.add_attribute(GL_FLOAT, 3);
+	opengl.geometry.add_attribute(GL_FLOAT, 2);
 	opengl.geometry.build();
 
 	opengl.lights.init();
 	opengl.lights.add_attribute(GL_FLOAT, 3);
 	opengl.lights.add_attribute(GL_FLOAT, 3);
+	opengl.lights.add_attribute(GL_FLOAT, 2);
 	opengl.lights.build();
 
 	arr_init(&materials, 16);
@@ -198,8 +157,7 @@ void update_render() {
 	shader->set_vec3("camera", camera.position);
 
 	auto material = materials[active_material];
-	shader->set_vec3("material.ambient", material->ambient);
-	shader->set_vec3("material.diffuse", material->diffuse);
+	shader->set_int("material.diffuse", 0);
 	shader->set_vec3("material.specular", material->specular);
 	shader->set_float("material.shininess", material->shininess);
 
@@ -208,11 +166,16 @@ void update_render() {
 	shader->set_vec3("light.specular", light.specular);
 	shader->set_vec3("light.position", light.position);
 
+	auto diffuse = find_texture("crate-diffuse.png");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, diffuse->handle);
+
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	shader->end();
 
 	opengl.geometry.unbind();
 
+	#if 0
 	opengl.lights.bind();
 
 	shader = find_shader("light_source");
@@ -229,7 +192,7 @@ void update_render() {
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	opengl.lights.unbind();
 	shader->end();
-
+#endif
 	render_imgui();
 	swap_buffers();
 }

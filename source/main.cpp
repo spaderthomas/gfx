@@ -22,6 +22,7 @@
 #include "utils/defer.hpp"
 #include "utils/texture.hpp"
 #include "options.hpp"
+#include "vertices.hpp"
 #include "render.hpp"
 #include "sandbox.hpp"
 
