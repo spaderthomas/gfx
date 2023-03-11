@@ -81,6 +81,12 @@ void update_camera() {
 	if (input.is_down[GLFW_KEY_A]) {
 		move.x = -1 * options::camera_speed;
 	}
+	if (input.is_down[GLFW_KEY_E]) {
+		move.y = 1 * options::camera_speed;
+	}
+	if (input.is_down[GLFW_KEY_Q]) {
+		move.y = -1 * options::camera_speed;
+	}
 	camera.move(move);
 
 	options::fov -= input.scroll.y;
