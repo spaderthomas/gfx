@@ -45,4 +45,6 @@ void init_textures() {
 	add_texture("wall.png");
 	add_texture("face.png");
 	add_texture("crate-diffuse.png");
+	add_texture("crate-specular.png");
+	add_texture("crate-emission.png");
 }

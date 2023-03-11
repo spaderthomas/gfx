@@ -158,7 +158,8 @@ void update_render() {
 
 	auto material = materials[active_material];
 	shader->set_int("material.diffuse", 0);
-	shader->set_vec3("material.specular", material->specular);
+	shader->set_int("material.specular", 1);
+	shader->set_int("material.emission", 2);
 	shader->set_float("material.shininess", material->shininess);
 
 	shader->set_vec3("light.ambient",  light.ambient);
@@ -170,12 +171,19 @@ void update_render() {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, diffuse->handle);
 
+	auto specular = find_texture("crate-specular.png");
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, specular->handle);
+
+	auto emission = find_texture("crate-emission.png");
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, emission->handle);
+
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	shader->end();
 
 	opengl.geometry.unbind();
 
-	#if 0
 	opengl.lights.bind();
 
 	shader = find_shader("light_source");
@@ -192,7 +200,7 @@ void update_render() {
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	opengl.lights.unbind();
 	shader->end();
-#endif
+
 	render_imgui();
 	swap_buffers();
 }
