@@ -1,7 +1,7 @@
 void init_window() {
 	set_window_flags(WindowFlags::Windowed | WindowFlags::Border | WindowFlags::Vsync);
 	set_native_resolution(1920, 1080);
-	set_output_resolution(800, 600);
+	set_output_resolution(1600, 1200);
 
 	init_glfw();
 }

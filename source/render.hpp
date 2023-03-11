@@ -42,6 +42,25 @@ float vertices[] = {
     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 };
 
+struct Material {
+	glm::vec3 ambient;
+	glm::vec3 diffuse;
+	glm::vec3 specular;
+	float32 shininess;
+};
+Array<Material> materials;
+uint32 active_material;
+
+struct Light {
+	glm::vec3 position;
+	glm::vec3 ambient;
+	glm::vec3 diffuse;
+	glm::vec3 specular;
+	
+	bool move;
+};
+Light light;
+
 struct GpuBufferDescriptor {
 	struct Attribute {
 		uint32 offset;
@@ -126,6 +145,18 @@ void init_render() {
 	opengl.lights.add_attribute(GL_FLOAT, 3);
 	opengl.lights.add_attribute(GL_FLOAT, 3);
 	opengl.lights.build();
+
+	arr_init(&materials, 16);
+	auto material = arr_push(&materials);
+	material->ambient = glm::vec3(1.0f, 0.5f, 0.31f);
+	material->diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
+	material->specular = glm::vec3(0.5f, 0.5f, 0.5f);
+	material->shininess = 32;
+
+	light.ambient  = glm::vec3(0.2f, 0.2f, 0.2f);
+	light.diffuse  = glm::vec3(0.5f, 0.5f, 0.5f);
+	light.specular = glm::vec3(1.0f, 1.0f, 1.0f);
+	light.position = glm::vec3(1.2f, 1.0f, 2.0f);
 }
 
 void clear_render_target() {
@@ -139,17 +170,20 @@ void swap_buffers() {
 
 
 void update_render() {
-	glm::mat4 projection = glm::perspective(math::radians(options::fov), window.get_aspect_ratio(), options::near_plane, options::far_plane);
-	glm::mat4 view = camera.make_view_matrix();
-	glm::mat4 model = glm::mat4(1.0f);
-	glm::vec3 light_position(1.2f, 1.0f, 2.0f);
-	Vector3 light_color = { 1.0f, 1.0f, 1.0f };
-	Vector3 object_color = { 1.0f, 0.5f, 0.31f };
-
 	auto now = glfwGetTime();
 	auto c = cos(now);
 	auto s = sin(now);
-	//light_position = glm::vec3(1.0f * c, 1.0f, 1.0f * s);
+	if (light.move) {
+		auto c = cos(glfwGetTime());
+		auto s = sin(glfwGetTime());
+		light.position.x = (float32)(c * 1.0f);
+		light.position.z = (float32)(s * 1.0f);
+	}
+	
+	glm::mat4 projection = glm::perspective(math::radians(options::fov), window.get_aspect_ratio(), options::near_plane, options::far_plane);
+	glm::mat4 view = camera.make_view_matrix();
+	glm::mat4 model = glm::mat4(1.0f);
+
 	clear_render_target();
 
 	opengl.geometry.bind();
@@ -161,10 +195,18 @@ void update_render() {
 	shader->set_mat4("projection", projection);
 	shader->set_mat4("view", view);
 	shader->set_mat4("model", model);
-	shader->set_vec3("light_color", light_color);
-	shader->set_vec3("object_color", object_color);
-	shader->set_vec3("light_position", light_position);
 	shader->set_vec3("camera", camera.position);
+
+	auto material = materials[active_material];
+	shader->set_vec3("material.ambient", material->ambient);
+	shader->set_vec3("material.diffuse", material->diffuse);
+	shader->set_vec3("material.specular", material->specular);
+	shader->set_float("material.shininess", material->shininess);
+
+	shader->set_vec3("light.ambient",  light.ambient);
+	shader->set_vec3("light.diffuse",  light.diffuse);
+	shader->set_vec3("light.specular", light.specular);
+	shader->set_vec3("light.position", light.position);
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	shader->end();
@@ -179,7 +221,7 @@ void update_render() {
 	shader->set_mat4("view", view);
 
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, light_position);
+	model = glm::translate(model, light.position);
 	model = glm::scale(model, glm::vec3(0.2f));
 	shader->set_mat4("model", model);
 

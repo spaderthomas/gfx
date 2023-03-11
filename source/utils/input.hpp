@@ -15,10 +15,13 @@ struct InputManager {
 	Vector2 scroll;
 	Vector2 mouse_delta;
 
+	// The bit field is for internally determine whether the GUI or the scene gets our input.
+	// The flag is so in your game code, you can tell the input manager that you don't care
+	// if the game is *allowed* to get input, you want to disable it.
 	uint8 mask;
-	uint8 old_mask;
+	bool allow_game_input = true;
 
-	bool is_down[GLFW_KEY_LAST];
+	bool down[GLFW_KEY_LAST];
 	bool was_down[GLFW_KEY_LAST];
 	char shift_map[128];
 
@@ -26,8 +29,11 @@ struct InputManager {
 
 	void enable_channel(int8 channel);
 	void disable_channel(int8 channel);
+	void toggle_game_input();
+	bool is_channel_enabled(int8 channel);
 	void start_imgui();
 	void stop_imgui();
+	bool is_down(int32 id, int channel = INPUT_MASK_ALL);
 	bool was_pressed(int32 id, int channel = INPUT_MASK_ALL);
 	bool was_released(int32 id, int channel = INPUT_MASK_ALL);
 	bool is_mod_down(int32 mod_key, int channel = INPUT_MASK_ALL);

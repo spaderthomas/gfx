@@ -6,13 +6,12 @@ struct TemporaryStorage {
 	Array<char> memory_block;
 
 	template<typename T>
+	Array<T> alloc_array(int32 size);
+	
+	template<typename T>
 	T* alloc();
 	
 	void* alloc(int32 size);
-
-	template<typename T>
-	Array<T> alloc_array(int32 size);
-
 	char* alloc_path();
 	
 	void clear();

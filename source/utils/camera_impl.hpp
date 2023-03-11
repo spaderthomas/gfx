@@ -62,6 +62,7 @@ glm::mat4 Camera::make_view_matrix() {
 
 void update_camera() {
 	auto& input = get_input_manager();
+	if (!input.is_channel_enabled(INPUT_MASK_GAME)) return;
 	
 	camera.yaw += input.mouse_delta.x * options::sensitivity * -1;
 	camera.yaw = fmodf(camera.yaw, 360.0f);
@@ -69,17 +70,23 @@ void update_camera() {
 	camera.pitch = math::clamp(camera.pitch, -90.0f, 90.0f);
 
 	auto move = glm::vec3(0.0f, 0.0f, 0.0f);
-	if (input.is_down[GLFW_KEY_W]) {
+	if (input.is_down(GLFW_KEY_W)) {
 		move.z = 1 * options::camera_speed;
 	}
-	if (input.is_down[GLFW_KEY_S]) {
+	if (input.is_down(GLFW_KEY_S)) {
 		move.z = -1 * options::camera_speed;
 	}
-	if (input.is_down[GLFW_KEY_D]) {
+	if (input.is_down(GLFW_KEY_D)) {
 		move.x = 1 * options::camera_speed;
 	}
-	if (input.is_down[GLFW_KEY_A]) {
+	if (input.is_down(GLFW_KEY_A)) {
 		move.x = -1 * options::camera_speed;
+	}
+	if (input.is_down(GLFW_KEY_Q)) {
+		move.y = 1 * options::camera_speed;
+	}
+	if (input.is_down(GLFW_KEY_E)) {
+		move.y = -1 * options::camera_speed;
 	}
 	camera.move(move);
 

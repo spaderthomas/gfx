@@ -9,43 +9,58 @@ void InputManager::enable_channel(int8 channel) {
 void InputManager::disable_channel(int8 channel) {
 	mask &= ~channel;
 }
-	
-bool InputManager::was_pressed(int32 id, int channel) {
-	if (!(this->mask & channel)) return false;
-	return is_down[id] && !was_down[id];
+
+void InputManager::toggle_game_input() {
+	allow_game_input = !allow_game_input;
 }
-	
+
+bool InputManager::is_channel_enabled(int8 channel) {
+	bool enabled = this->mask & channel;
+	if (channel == INPUT_MASK_GAME) enabled &= allow_game_input;
+	return enabled;
+}
+
+bool InputManager::is_down(int32 id, int channel) {
+	if (!is_channel_enabled(channel)) return false;
+	return down[id];
+}
+
+bool InputManager::was_pressed(int32 id, int channel) {
+	if (!is_channel_enabled(channel)) return false;
+	return down[id] && !was_down[id];
+}
+
 bool InputManager::was_released(int32 id, int channel) {
-	if (!(this->mask & channel)) return false;
-	return !is_down[id] && was_down[id];
+	if (!is_channel_enabled(channel)) return false;
+	return !down[id] && was_down[id];
 }
 	
 bool InputManager::is_mod_down(int32 mod_key, int channel) {
-	if (!(this->mask & channel)) return false;
+	if (!is_channel_enabled(channel)) return false;
 		
-	bool down = false;
+	bool mod_down = false;
 	if (mod_key == GLFW_KEY_CONTROL) {
-		down |= is_down[GLFW_KEY_RIGHT_CONTROL];
-		down |= is_down[GLFW_KEY_LEFT_CONTROL];
+		mod_down |= down[GLFW_KEY_RIGHT_CONTROL];
+		mod_down |= down[GLFW_KEY_LEFT_CONTROL];
 	}
 	if (mod_key == GLFW_KEY_SUPER) {
-		down |= is_down[GLFW_KEY_LEFT_SUPER];
-		down |= is_down[GLFW_KEY_RIGHT_SUPER];
+		mod_down |= down[GLFW_KEY_LEFT_SUPER];
+		mod_down |= down[GLFW_KEY_RIGHT_SUPER];
 	}
 	if (mod_key == GLFW_KEY_SHIFT) {
-		down |= is_down[GLFW_KEY_LEFT_SHIFT];
-		down |= is_down[GLFW_KEY_RIGHT_SHIFT];
+		mod_down |= down[GLFW_KEY_LEFT_SHIFT];
+		mod_down |= down[GLFW_KEY_RIGHT_SHIFT];
 	}
 	if (mod_key == GLFW_KEY_ALT) {
-		down |= is_down[GLFW_KEY_LEFT_ALT];
-		down |= is_down[GLFW_KEY_RIGHT_ALT];
+		mod_down |= down[GLFW_KEY_LEFT_ALT];
+		mod_down |= down[GLFW_KEY_RIGHT_ALT];
 	}
 
-	return down;
+	return mod_down;
 }
 
 bool InputManager::chord(int32 mod_key, int32 cmd_key, int channel) {
-	if (!(this->mask & channel)) return false;
+	if (!is_channel_enabled(channel)) return false;
 	return is_mod_down(mod_key, channel) && was_pressed(cmd_key, channel);
 }
 	
@@ -121,7 +136,7 @@ void update_input() {
 
 
 	for (int key = 0; key < GLFW_KEY_LAST; key++) {
-		input.was_down[key] = input.is_down[key];
+		input.was_down[key] = input.down[key];
 	}
 
 	input.scroll.x = 0;
@@ -168,18 +183,18 @@ void GLFW_Mouse_Button_Callback(GLFWwindow* window, int button, int action, int 
 	auto& input_manager = get_input_manager();
 	if (button == GLFW_MOUSE_BUTTON_LEFT) {
 		if (action == GLFW_PRESS) {
-			input_manager.is_down[GLFW_MOUSE_BUTTON_LEFT] = true;
+			input_manager.down[GLFW_MOUSE_BUTTON_LEFT] = true;
 		}
 		if (action == GLFW_RELEASE) {
-			input_manager.is_down[GLFW_MOUSE_BUTTON_LEFT] = false;
+			input_manager.down[GLFW_MOUSE_BUTTON_LEFT] = false;
 		}
 	}
 	if (button == GLFW_MOUSE_BUTTON_RIGHT) {
 		if (action == GLFW_PRESS) {
-			input_manager.is_down[GLFW_MOUSE_BUTTON_RIGHT] = true;
+			input_manager.down[GLFW_MOUSE_BUTTON_RIGHT] = true;
 		}
 		if (action == GLFW_RELEASE) {
-			input_manager.is_down[GLFW_MOUSE_BUTTON_RIGHT] = false;
+			input_manager.down[GLFW_MOUSE_BUTTON_RIGHT] = false;
 		}
 	}
 }
@@ -188,10 +203,10 @@ void GLFW_Key_Callback(GLFWwindow* window, int key, int scancode, int action, in
 	auto& manager = get_input_manager();
 	
 	if (action == GLFW_PRESS) {
-		manager.is_down[key] = true;
+		manager.down[key] = true;
 	}
     if (action == GLFW_RELEASE) {
-		manager.is_down[key] = false;
+		manager.down[key] = false;
 	}
 }
 
