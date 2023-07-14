@@ -17,7 +17,7 @@ char* TemporaryStorage::alloc_path() {
 void* TemporaryStorage::alloc(int32 size) {
 	fm_assert(this->memory_block.size + size <= this->memory_block.capacity);
 	
-	void* data = arr_back(&this->memory_block);
+	void* data = arr_next(&this->memory_block);
 	this->memory_block.size += size;
 	
 	return data;

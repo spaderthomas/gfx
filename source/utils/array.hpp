@@ -241,6 +241,7 @@ T* arr_concat(Array<T>* dest, Array<T>* source, int32 count) {
 
 template<typename T>
 T* arr_back(Array<T>* array) {
+	fm_assert(array->size);
 	return array->data + (array->size - 1);
 }
 

@@ -86,7 +86,7 @@ void Shader::mark_uniform_set(const char* name) {
 	// Copy the string and add this uniform
 	char (*arr) [MAX_UNIFORM_LEN] = arr_next(&uniforms_set_this_call);
 	char* buffer = &(*arr)[0];
-	strncpy(buffer, name, MAX_PATH_LEN);
+	strncpy(buffer, name, MAX_UNIFORM_LEN);
 	uniforms_set_this_call.size += 1;
 }
 
